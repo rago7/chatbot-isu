@@ -33,7 +33,7 @@
 
         #search-button {
             padding: 10px 20px;
-            background-color: #254982;
+            background-color: #3c75d0;
             color: #ffffff;
             border: none;
             border-radius: 5px;
@@ -73,53 +73,37 @@
 <body>
     <div id="header">
         <h3>Hello! I'm Virtual Assistant from ECET Department</h3>
-        <!-- <div id="links">
-            <div class="link">
-                <a href="#">About ECET</a>
-            </div>
-            <div class="link">
-                <a href="#">About Me</a>
-            </div>
-        </div> -->
     </div>
 
-    <!-- The below form is no longer needed aas I had moved it to footer section. -->
-    <!-- <form class="form-inline">
-        <div id="search-bar">
-            <input type="text" id="search-input" placeholder="Search ECET ...">
-            <button id="search-button">Search ECET</button>
-        </div>
-    </form> -->
-    <!-- <div class="container-fluid main-section">
-        Chat Content goes here
-        
-                                                                                                                                                                                                                                                
-    </div> -->
-
-    <!-- <main class="container">
-        <div class="row">
+    <main class="container">
+        <div class="col">
             <div class="col-md-6">                
                 <div class="container-fluid main-section">                    
-                    Chat Content goes here
-                </div>
-            </div>
-            <div class="col-md-6">                
-                <div class="container-fluid main-section">
-                    Right half
+                    {% if q0 %}
+                        {{q0}}
+                    {% else %}
+                        q0 did not loaded
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </main> -->
-
-
+        <div class="col">
+            <div class="col-md-6">                
+                <div class="container-fluid main-section">                    
+                    Chat Content 2 goes here
+                </div>
+            </div>
+        </div>
+    </main>
 
     <footer class="footer fixed-bottom text-white text-center">
         <!-- <div class="container">
             Any Extra Content, currently use it as buffer - Ram
         </div> -->
-        <form class="form-inline">
+        <form class="form-inline" action="/" method="POST">
+            {% csrf_token %}
             <div id="search-bar">
-                <input type="text" id="search-input" placeholder="Search ECET ...">
+                <input type="text" id="search-input" placeholder="Search ECET ..." name="search_query">
                 <button id="search-button">Search ECET</button>
             </div>
         </form>
