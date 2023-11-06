@@ -86,15 +86,15 @@
     </div>
 
     <main class="container" id="chat_content">           
-        <!-- <div class="container-fluid main-section" style="display: flex; justify-content: left;">  
-            <div class="q_content">                  
+        <div class="container-fluid main-section" style="display: flex; justify-content: left;">  
+            <div class="ans_content">                  
                 {% if q0 %}
                     {{q0}}
                 {% else %}
                     q0 did not loaded
                 {% endif %}
             </div>
-        </div>                -->
+        </div>               
         <!-- <div class="container-fluid main-section" style="display: flex; justify-content: end;">  
             <div class="ans_content">
                 Chat Content 2 goes here
@@ -142,6 +142,10 @@
                     $('#search-input').val('')
                     console.log("Successfull response \n", data)
 
+                    let conv = document.createElement('div')
+                    let hr = document.createElement('hr')
+                    conv.setAttribute('class', 'conv_pair')
+
                     let q = document.createElement('div')
                     q.setAttribute('class', 'container-fluid main-section')
                     q.setAttribute('style', 'display:flex;justify-content:right')
@@ -149,7 +153,8 @@
                     q_content.setAttribute('class', 'q_content')
                     q_content.innerText = textFieldValue
                     q.appendChild(q_content)
-                    $("#chat_content").append(q)
+                    conv.appendChild(q)
+                    // $("#chat_content").append(q)
 
                     let ans = document.createElement('div')
                     ans.setAttribute('class', 'container-fluid main-section')
@@ -158,7 +163,10 @@
                     ans_content.setAttribute('class', 'ans_content')
                     ans_content.innerText = data[textFieldValue]
                     ans.appendChild(ans_content)
-                    $("#chat_content").append(ans)
+                    conv.appendChild(ans)
+
+                    conv.appendChild(hr)
+                    $("#chat_content").append(conv)
                 }
             });
         });
