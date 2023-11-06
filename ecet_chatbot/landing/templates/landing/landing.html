@@ -68,6 +68,16 @@
         footer{
             background-color: #535151 !important;
         }
+
+        .container-fluid.main-section div.q_content{
+            background-color:antiquewhite;
+            padding: 5px;
+        }
+
+        .container-fluid.main-section div.ans_content{
+            background-color:beige;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -75,36 +85,29 @@
         <h3>Hello! I'm Virtual Assistant from ECET Department</h3>
     </div>
 
-    <main class="container">
-        <div class="col">
-            <div class="col-md-6">                
-                <div class="container-fluid main-section">                    
-                    {% if q0 %}
-                        {{q0}}
-                    {% else %}
-                        q0 did not loaded
-                    {% endif %}
-                </div>
+    <main class="container" id="chat_content">           
+        <!-- <div class="container-fluid main-section" style="display: flex; justify-content: left;">  
+            <div class="q_content">                  
+                {% if q0 %}
+                    {{q0}}
+                {% else %}
+                    q0 did not loaded
+                {% endif %}
             </div>
-        </div>
-        <div class="col">
-            <div class="col-md-6">                
-                <div class="container-fluid main-section">                    
-                    Chat Content 2 goes here
-                </div>
-            </div>
-        </div>
+        </div>                -->
+        <!-- <div class="container-fluid main-section" style="display: flex; justify-content: end;">  
+            <div class="ans_content">
+                Chat Content 2 goes here
+            </div>                  
+        </div> -->
     </main>
 
     <footer class="footer fixed-bottom text-white text-center">
-        <!-- <div class="container">
-            Any Extra Content, currently use it as buffer - Ram
-        </div> -->
-        <form class="form-inline" action="/" method="POST">
+        <form id="#query_form" class="form-inline" >  
             {% csrf_token %}
-            <div id="search-bar">
+            <div id="search-bar">               
                 <input type="text" id="search-input" placeholder="Search ECET ..." name="search_query">
-                <button id="search-button">Search ECET</button>
+                <button id="search-button" type="submit" data-action="/">Search ECET</button>
             </div>
         </form>
     </footer>
@@ -116,4 +119,49 @@
 <!-- Include Bootstrap JavaScript and jQuery (optional) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search-button').on('click', function(event) {
+            event.preventDefault();
+
+            var textFieldValue = $('#search-input').val();
+            var actionUrl = $('#search-button').data('action');
+            console.log(textFieldValue, actionUrl)
+
+            $.ajax({
+                type: 'POST',
+                url: actionUrl,
+                data: {
+                    'search_query': textFieldValue
+                },
+                headers: {
+                    'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(data) {
+                    $('#search-input').val('')
+                    console.log("Successfull response \n", data)
+
+                    let q = document.createElement('div')
+                    q.setAttribute('class', 'container-fluid main-section')
+                    q.setAttribute('style', 'display:flex;justify-content:right')
+                    let q_content = document.createElement('div')
+                    q_content.setAttribute('class', 'q_content')
+                    q_content.innerText = textFieldValue
+                    q.appendChild(q_content)
+                    $("#chat_content").append(q)
+
+                    let ans = document.createElement('div')
+                    ans.setAttribute('class', 'container-fluid main-section')
+                    ans.setAttribute('style', 'display:flex; justify-content:left')
+                    let ans_content = document.createElement('div')
+                    ans_content.setAttribute('class', 'ans_content')
+                    ans_content.innerText = data[textFieldValue]
+                    ans.appendChild(ans_content)
+                    $("#chat_content").append(ans)
+                }
+            });
+        });
+    });
+</script>
 </html>
